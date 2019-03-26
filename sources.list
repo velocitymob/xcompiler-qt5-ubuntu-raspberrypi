@@ -1,0 +1,28 @@
+
+# See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
+
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic main restricted
+deb-src http://de.archive.ubuntu.com/ubuntu/ bionic main universe multiverse restricted
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic universe
+
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic multiverse
+deb-src http://de.archive.ubuntu.com/ubuntu/ xenial-updates multiverse
+
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://de.archive.ubuntu.com/ubuntu/ bionic-backports main restricted universe multiverse
+
+
+deb http://archive.canonical.com/ubuntu bionic partner
+deb-src http://archive.canonical.com/ubuntu bionic partner
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic-updates restricted main multiverse universe
+deb http://security.ubuntu.com/ubuntu/ bionic-security restricted main multiverse universe
+
+deb http://de.archive.ubuntu.com/ubuntu/ bionic-proposed multiverse main restricted universe
+
+
+
