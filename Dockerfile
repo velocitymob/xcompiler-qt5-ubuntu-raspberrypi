@@ -39,9 +39,10 @@ COPY qt5pibuilder /opt/qt5pibuilder
 WORKDIR /tmp 
 # download sysroot from google drive. TODO: find docker 
 RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
-RUN /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh 
-
-WORKDIR /opt/qt5pibuilder
+RUN /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh $PATH_GCC $GCC_VERSION
 RUN ls -lah && pwd
-RUN /bin/bash -c ./build.sh
-RUN /opt/qt5pibuilder/qt5/bin/qmake -query > reportfile.txt
+
+#WORKDIR /opt/qt5pibuilder
+#RUN ls -lah && pwd
+#RUN /bin/bash -c ./build.sh
+#RUN /opt/qt5pibuilder/qt5/bin/qmake -query > reportfile.txt
