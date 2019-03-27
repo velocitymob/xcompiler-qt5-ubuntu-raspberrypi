@@ -75,12 +75,7 @@ if [ ! -d $PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf];
 	HTTP_LINARO="https://releases.linaro.org/components/toolchain/binaries/"
   #LINARO_TOOLCHAIN=$( curl -s $HTTP_LINARO  --list-only | sed -n  "/href/ s/.*href=['\"]\([^'\"]*\)['\"].*/\1/gp" | grep $GCC_VERSION )
 	#curl -s $HTTP_LINARO$LINARO_TOOLCHAIN/arm-linux-gnueabihf/ --list-only >listtoolchain 
-	wget -c https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05\
-			/arm-linux-gnueabihf/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf.tar.xz\
-	 		-P $PATH_GCC -O gcc-linaro-$GCC_VERSION.tar.xz
-	tar -kx --xz -f gcc-li*.tar.xz
-  mv  gcc-linaro-$GCC_VERSION-2018*  $PATH_GCC
-	rm -rf *.tar.*
+	/bin/bash -c /$BASEDIR/qt5pibuilder/getgcclinaro.sh $PATH_GCC $GCC_VERSION
 	cd $BASEDIR
 fi
 
