@@ -4,14 +4,15 @@
 set -x
 
 #this giy need to be a variable in the future
-QT_VERSION=5.10
+QT_VERSION=5.13
 # here come wich gcc tool do you want to try
 GCC_VERSION=7.3.1
 ARCHCROSS=arm-linux-gnueabihf-
 PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
 
 # module used to compile Stationpedelec, in the future add qtweb
-QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
+#QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
+QT_MODULES=" "
 BASEDIR=$PWD
 CLEAN=true
 
