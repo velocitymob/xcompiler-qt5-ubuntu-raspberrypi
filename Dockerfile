@@ -39,13 +39,13 @@ COPY qt5pibuilder /opt/qt5pibuilder
 #TODO: replace  RUN command by ADD. Files from remote URLs will untar the file into the ADD director
 
 # download sysroot from google drive. TODO: find docker 
-#RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
+RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
 WORKDIR /tmp 
-RUN /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh ${PATH_GCC} ${GCC_VERSION}
+RUN /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh 
 WORKDIR /opt/qt5pibuilder
-#RUN ls -lah && pwd
+RUN ls -lah && pwd
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
-#RUN /bin/bash -c ./build.sh
+RUN /bin/bash -c ./build.sh
 # show the compiled version  
-#RUN /opt/qt5pibuilder/qt5/bin/qmake -query > reportfile.txt
+RUN /opt/qt5pibuilder/qt5/bin/qmake -query > reportfile.txt

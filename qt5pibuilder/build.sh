@@ -92,9 +92,6 @@ if [ "$OPTIONSYS" = "$SYSROOT" ]; then
 else
 	echo "Getting Sysroot from googledrive"
 	cd $BASEDIR
-
-	#  curl -JLO  "https://www.dropbox.com/s/4nm8saa2snh8un4/rpiSysroot-2018-06-27-raspbian-stretch-lite-updated.tar.xz?dl=0"
-
 fi
 
 # clean old build
