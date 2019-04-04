@@ -40,11 +40,11 @@ COPY qt5pibuilder /opt/qt5pibuilder
 
 # installing cmake for the future  
 RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
-	tar -kx  -f cmake-3.14.1.tar.gz \
-	rm -rf *.tar.* \
-	mv cmake* /opt \
-  cd /opt/cmake* && ./bootstrap && make && sudo make install  \ 
-	cmake --version
+	&& tar -kx  -f cmake-3.14.1.tar.gz \
+	&& rm -rf *.tar.* \
+	&& mv cmake* /opt  \
+  && cd /opt/cmake* && ./bootstrap && make && sudo make install  \ 
+	&& cmake --version
 	
 	
 # download sysroot from google drive. TODO: find docker 
