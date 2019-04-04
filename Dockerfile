@@ -38,6 +38,15 @@ RUN	mkdir -p /mnt/raspbian && mkdir -p ${PATH_GCC}
 COPY qt5pibuilder /opt/qt5pibuilder
 #TODO: replace  RUN command by ADD. Files from remote URLs will untar the file into the ADD director
 
+# installing cmake for the future  
+RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
+	tar -kx  -f cmake-3.14.1.tar.gz \
+	rm -rf *.tar.* \
+	mv cmake* /opt \
+  cd /opt/cmake* && ./bootstrap && make && sudo make install  \ 
+	cmake --version
+	
+	
 # download sysroot from google drive. TODO: find docker 
 RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
