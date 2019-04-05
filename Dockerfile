@@ -8,8 +8,8 @@ MAINTAINER Giovanni Perez
 COPY sources.list /etc/apt/ 
 
 
-ARG GCC_VERSION 7.3.1
-ARG PATH_GCC /opt/gcc-linaro-${GCC_VERSION}
+ARG GCC_VERSION=7.3.1
+ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 ENV GCC_VERSION ${GCC_VERSION}
 ENV PATH_GCC ${PATH_GCC}
 ENV ARCHCROSS arm-linux-gnueabihf-
@@ -50,18 +50,13 @@ RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.
 # download sysroot from google drive. TODO: find docker 
 RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
-
 RUN export var1=${PATH_GCC} && export var2=${GCC_VERSION} \
 	&& /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh -p $var1 -v $var2
 
-RUN	printenv && echo "path:$$PATH_GCC ,version:$$GCC_VERSION" 
 WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
 RUN /bin/bash -c ./build.sh
 
 
-# Include qmake to PATH environment
-ENV PATH="${PATH_GCC}/gcc-*/bin/arm-linux-gnueabihf-gcc-${GCC_VERSION}:${PATH}"
-RUN arm-linux-gnueabihf-gcc --version
 # show the compiled version  
 RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
