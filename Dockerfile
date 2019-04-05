@@ -7,8 +7,11 @@ MAINTAINER Giovanni Perez
 # Installation of packages used for the compilation of Xcompiler and QT5
 COPY sources.list /etc/apt/ 
 
-ENV GCC_VERSION 7.3.1
-ENV PATH_GCC /opt/gcc-linaro-${GCC_VERSION}
+
+ARG GCC_VERSION 7.3.1
+ARG PATH_GCC /opt/gcc-linaro-${GCC_VERSION}
+ENV GCC_VERSION ${GCC_VERSION}
+ENV PATH_GCC ${PATH_GCC}
 ENV ARCHCROSS arm-linux-gnueabihf-
 ENV SYSROOT /mnt/raspbian/sysroot
 
@@ -55,5 +58,10 @@ RUN	printenv && echo "path:$$PATH_GCC ,version:$$GCC_VERSION"
 WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
 RUN /bin/bash -c ./build.sh
+
+
+# Include qmake to PATH environment
+ENV PATH="${PATH_GCC}/gcc-*/bin/arm-linux-gnueabihf-gcc-${GCC_VERSION}:${PATH}"
+RUN arm-linux-gnueabihf-gcc --version
 # show the compiled version  
 RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt

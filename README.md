@@ -31,6 +31,6 @@ If you want to modify the version from Qt 5 or the Version of the compiler. You 
 * to see all created containers:
  `docker ps -a ` 
  * To remove all existing containers :
- docker rm $(docker ps -aq)
+ `docker rm $(docker ps -aq)`
 * To remove images 
-docker rmi NAME_OF_IMAGE
+`docker rmi NAME_OF_IMAGE`
