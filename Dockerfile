@@ -11,24 +11,25 @@ COPY sources.list /etc/apt/
 ARG QT_VERSION=5.10
 ARG GCC_VERSION=7.3.1
 ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
-
+ARG DEVICE=linux-rasp-pi3-g++
 ENV GCC_VERSION ${GCC_VERSION}
 ENV PATH_GCC ${PATH_GCC}
 ENV QT_VERSION ${QT_VERSION}
 ENV ARCHCROSS arm-linux-gnueabihf-
 ENV SYSROOT /mnt/raspbian/sysroot
+ENV DEVICE ${DEVICE}
 
 RUN apt-get update && apt-get install -y \
-#	build-essential \
+	#	build-essential \
 	libc6-dev\
 	wget \
 	curl \
 	gdb-multiarch \
 	xz-utils \
-#	git \
-#	unzip \
-#	zip \
-#	multistrap \
+	git \
+	unzip \
+	zip \
+	multistrap \
 #	cmake \
 	python \
 	pkg-config \
@@ -51,14 +52,14 @@ RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.
 	&& cmake --version
 	
 # download sysroot from google drive. TODO: find docker 
-RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
+RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
 RUN echo "path: ${PATH_GCC}  Version: ${GCC_VERSION} " \
 	&& set -x && /bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v ${GCC_VERSION} -p ${PATH_GCC}
 
 WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
-RUN /bin/bash  ./build.sh 
+RUN printenv && /bin/bash ./build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt {QT_VERSION}
 
 # show the compiled version  
 RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
