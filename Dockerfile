@@ -20,7 +20,7 @@ ENV SYSROOT /mnt/raspbian/sysroot
 ENV DEVICE ${DEVICE}
 
 RUN apt-get update && apt-get install -y \
-	#	build-essential \
+	build-essential \
 	libc6-dev\
 	wget \
 	curl \
@@ -44,12 +44,12 @@ COPY qt5pibuilder /opt/qt5pibuilder
 
 # installing cmake for the future  
 WORKDIR /tmp 
-#RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
-#	&& tar -kx  -f cmake-3.14.1.tar.gz \
-#	&& rm -rf *.tar.* \
-#	&& mv cmake* /opt  \
-#	&& cd /opt/cmake* && /bin/bash -c ./bootstrap && make -j $(nproc) &&  make install  \ 
-#	&& cmake --version
+RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
+	&& tar -kx  -f cmake-3.14.1.tar.gz \
+	&& rm -rf *.tar.* \
+	&& mv cmake* /opt  \
+	&& cd /opt/cmake* && /bin/bash -c ./bootstrap && make -j $(nproc) &&  make install  \ 
+	&& cmake --version
 	
 # download sysroot from google drive. TODO: find docker 
 RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh 
