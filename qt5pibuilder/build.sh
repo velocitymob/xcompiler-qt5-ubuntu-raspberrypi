@@ -1,73 +1,77 @@
-#!/bin/sh -e
+#!/bin/sh 
 
 # show in wich line is run the code
 set -x
+set -e
+unset QT_VERSION GCC_VERSION PATH_GCC
 
 #this giy need to be a variable in the future
-QT_VERSION=5.13
+#QT_VERSION=5.13
 # here come wich gcc tool do you want to try
-GCC_VERSION=7.3.1
-ARCHCROSS=arm-linux-gnueabihf-
-PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
+#GCC_VERSION=7.3.1
+#PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
 
 # module used to compile Stationpedelec, in the future add qtweb
+ARCHCROSS=arm-linux-gnueabihf-
 QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
 BASEDIR=$PWD
 CLEAN=true
-
 # here you can use a frisch raspbian image or your personal sysroot
 DEVICE="linux-rasp-pi3-g++"
-
 # DEVICE='linux-rasp-pi3-vc4-g++'
 SYSROOT=/mnt/raspbian/sysroot
-COMPILER=$PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf/bin/$ARCHCROSS
-
+COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 MAKE_OPTS=-j$( nproc)
-
-USAGE="$(basename "$0") [-h] [-c] [-d device] -- install toolchain and build qt5 for raspberry pi, automated version of https://wiki.qt.io/RaspberryPi2EGLFS
+USAGE="$(basename "$0") [-c] [-d device] [-gcc GCC_VERSION] [-sys SYSROOT_PATH ] [-qt QT_VERSION] [-h]-- install toolchain and build qt5 for raspberry pi, automated version of https://wiki.qt.io/RaspberryPi2EGLFS
 
 where:
-	-h|--help	show this help text
 	-c|--clean	clean all modules to force rebuild
 	-d|--device	build for a specific device (defaults to linux-rpi3-g++)
 	-gcc|--gcc-linaro-version	select the crosscompiler from linaro bianrie
 	-sys|--sysroot select sysroot from server or build a new one
+	-qt|--qt-version select the version to compile of qt
+	-h|--help	show this help text
 	"
-
-while [ $# -gt 0 ]; do
+while [ $# -gt 0 ]
+do
 	key="$1"
-		
 	case $key in
 		-c|--clean)
 		CLEAN=true
 		shift
 		;;
 		-d|--device)
-		DEVICE="$4"
+		DEVICE=$2
 		shift
 		shift
-		;;
-		-h|--help)
-		echo "$USAGE"
-		exit
 		;;
 		-gcc|--gcc-linaro-version)
-		GCC_VERSION=$3
-		echo "$USAGE"
-		exit
+		GCC_VERSION=$2
+		echo "${GCC_VERSION}"
+		shift
+		shift
 		;;
 		-sys|--sysroot)
 		SYSROOT=$2
-		echo "$USAGE"
-		exit
+		echo "${SYSROOT}"
+		shift
+		shift
 		;;
-	    	*)
-		echo "$USAGE"
-		exit
+		-qt|--qt-version)
+		QT_VERSION=$2
+		echo ${QT_VERSION}
+		shift
+		shift
+		;;
+		-h|*)
+		echo "${USAGE}"
+		exit 
 		;;
 	esac
 done
+set -- "${USAGE[@]}" # restore positional parameters
 
+echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:{QT_VERSION}"
 # get compiler
 echo "GET COMPILER"
 if [ ! -d $PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf]; then
