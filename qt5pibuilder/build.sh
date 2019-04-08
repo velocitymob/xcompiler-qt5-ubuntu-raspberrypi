@@ -69,23 +69,23 @@ do
 done
 set -- "${USAGE[@]}" # restore positional parameters
 
-echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:{QT_VERSION}"
+echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:${QT_VERSION}"
 # get compiler
-PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
+PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 echo "GET COMPILER"
-if [ ! -d $PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf]; then
+if [ ! -d ${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf]; then
 	cd /tmp
 	HTTP_LINARO="https://releases.linaro.org/components/toolchain/binaries/"
   #LINARO_TOOLCHAIN=$( curl -s $HTTP_LINARO  --list-only | sed -n  "/href/ s/.*href=['\"]\([^'\"]*\)['\"].*/\1/gp" | grep $GCC_VERSION )
 	#curl -s $HTTP_LINARO$LINARO_TOOLCHAIN/arm-linux-gnueabihf/ --list-only >listtoolchain 
-	/bin/bash -c /$BASEDIR/qt5pibuilder/getgcclinaro.sh $PATH_GCC $GCC_VERSION
+	/bin/bash  /${BASEDIR}/qt5pibuilder/getgcclinaro.sh ${PATH_GCC} ${GCC_VERSION}
 	cd $BASEDIR
 fi
 
 
 echo "GET SYSROOT"
-if [ "$OPTIONSYS" = "$SYSROOT" ]; then
+if [ ! -d "$SYSROOT" ]; then
 	#TODO: mount  new image and install dependency to create a new sysroot_2019
 	cd /tmp
 	wget -c https://downloads.raspberrypi.org/raspbian_latest -o raspbian.zip
