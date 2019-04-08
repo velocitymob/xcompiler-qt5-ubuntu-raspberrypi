@@ -9,7 +9,6 @@ unset QT_VERSION GCC_VERSION PATH_GCC
 #QT_VERSION=5.13
 # here come wich gcc tool do you want to try
 #GCC_VERSION=7.3.1
-#PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
 
 # module used to compile Stationpedelec, in the future add qtweb
 ARCHCROSS=arm-linux-gnueabihf-
@@ -20,7 +19,6 @@ CLEAN=true
 DEVICE="linux-rasp-pi3-g++"
 # DEVICE='linux-rasp-pi3-vc4-g++'
 SYSROOT=/mnt/raspbian/sysroot
-COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 MAKE_OPTS=-j$( nproc)
 USAGE="$(basename "$0") [-c] [-d device] [-gcc GCC_VERSION] [-sys SYSROOT_PATH ] [-qt QT_VERSION] [-h]-- install toolchain and build qt5 for raspberry pi, automated version of https://wiki.qt.io/RaspberryPi2EGLFS
 
@@ -73,6 +71,8 @@ set -- "${USAGE[@]}" # restore positional parameters
 
 echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:{QT_VERSION}"
 # get compiler
+PATH_GCC=/opt/gcc-linaro-$GCC_VERSION
+COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 echo "GET COMPILER"
 if [ ! -d $PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf]; then
 	cd /tmp

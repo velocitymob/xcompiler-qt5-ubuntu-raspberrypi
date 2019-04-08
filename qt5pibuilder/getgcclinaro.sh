@@ -3,37 +3,28 @@ set -x
 unset   my_gcc_VERSION  dst_path_GCC
 # Defaults Values:
 
-usage()
-{
-  echo "Usage: $0 [ -v GCC_VERSION ] [ -p GCC_PATH ] [-h|-r] "
-  exit 2
-}
-
-set_variable()
-{
-  local varname=$1
-  shift
-  if [ -z "${!varname}" ]; then
-    eval "$varname=\"$@\""
-  else
-    echo "Error: $varname already set"
-    usage
-  fi
-}
-
-
-while getopts 'v:p:?h' option
+usage=" $(basename "$0") [ -v GCC_VERSION ] [ -p GCC_PATH ] [-h|-r] "
+while [ $# -gt 0 ]  
 do
-	case "${option}" in
-		v)set_variable 	my_gcc_VERSION ${OPTARG}
+	key="$1"
+	case ${key} in
+		-v|--version)
+			my_gcc_VERSION=$2
 			echo ${my_gcc_VERSION}
+			shift
+			shift
 			;;
-		p) set_variable dst_path_GCC ${OPTARG}
+		-p|--path) 
+		 	dst_path_GCC=$2
 			echo ${dst_path_GCC}
+			shift
+			shift
 			;;
-		h|?) usage ;;
+		h|?) $usage ;;
 	esac	
 done
+
+set -- "${usage[@]}" 
 
 echo "path: ${dst_path_GCC} , version: ${my_gcc_VERSION}"
 
