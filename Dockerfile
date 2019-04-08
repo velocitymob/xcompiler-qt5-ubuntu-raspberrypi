@@ -59,7 +59,7 @@ RUN echo "path: ${PATH_GCC}  Version: ${GCC_VERSION} " \
 
 WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
-RUN printenv && /bin/bash ./build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt {QT_VERSION}
+RUN printenv && /bin/bash ./build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt ${QT_VERSION}
 
 # show the compiled version  
 RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
