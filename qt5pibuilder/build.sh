@@ -10,14 +10,14 @@ unset QT_VERSION GCC_VERSION PATH_GCC
 # here come wich gcc tool do you want to try
 #GCC_VERSION=7.3.1
 # SYSROOT=/mnt/raspbian/sysroot
-
 # module used to compile Stationpedelec, in the future add qtweb
 ARCHCROSS=arm-linux-gnueabihf-
-QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
+#QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
+QT_MODULES=""
 BASEDIR=$PWD
 CLEAN=true
 # here you can use a frisch raspbian image or your personal sysroot
-DEVICE="linux-rasp-pi3-g++"
+# DEVICE="linux-rasp-pi3-g++"
 # DEVICE='linux-rasp-pi3-vc4-g++'
 MAKE_OPTS=-j$( nproc)
 USAGE="$(basename "$0") [-c] [-d device] [-gcc GCC_VERSION] [-sys SYSROOT_PATH ] [-qt QT_VERSION] [-h]-- install toolchain and build qt5 for raspberry pi, automated version of https://wiki.qt.io/RaspberryPi2EGLFS
@@ -57,7 +57,7 @@ do
 		;;
 		-qt|--qt-version)
 		QT_VERSION=$2
-		echo ${QT_VERSION}
+		echo "${QT_VERSION}"
 		shift
 		shift
 		;;
@@ -67,10 +67,12 @@ do
 		;;
 	esac
 done
-set -- "${USAGE[@]}" # restore positional parameters
+#echo ${popo[@]}
+#set -- "${popopo[@]}" # restore positional parameters
 
 echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:${QT_VERSION}"
 # get compiler
+exit 0
 PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 
@@ -86,11 +88,11 @@ fi
 
 
 echo "GET SYSROOT"
-if [ -d "$SYSROOT" ]; then
+if [ -d $SYSROOT_PATH	]; then
 	#TODO: mount  new image and install dependency to create a new sysroot_2019
-	echo "Getting Sysroot from scratch"
-else
 	echo "Getting Sysroot from googledrive"
+else
+	echo "Getting Sysroot from scratch"
 fi
 
 cd $BASEDIR
@@ -105,13 +107,14 @@ if [ ! -f sysroot-relativelinks.py ]; then
   ./sysroot-relativelinks.py $SYSROOT
 fi
 ./sysroot-relativelinks.py $SYSROOT
+ 
 
 # build qtcore
 if [ ! -d qtbase ]; then
 	git clone --depth 1 git://code.qt.io/qt/qtbase.git -b $QT_VERSION
 fi
 
-cd qtbase
+cd ${BASEDIR}/qtbase
 if [ "$CLEAN" = true ]; then
 	git clean -d -f -x
 fi
@@ -134,7 +137,8 @@ for MODULE in $QT_MODULES; do
 	if [ "$CLEAN" = true ]; then
 		git clean -d -f -x
 	fi
-	$BASEDIR/qt5/bin/qmake
+
+	${BASEDIR}/qt5/bin/qmake
 	make ${MAKE_OPTS}
 	make install
 	cd ..
