@@ -50,6 +50,7 @@ RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh
 RUN echo "path: ${PATH_GCC}  Version: ${GCC_VERSION} " \
 	&& /bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v ${GCC_VERSION} -p ${PATH_GCC}
 
+WORKDIR /opt/qt5pibuilder 
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
 RUN printenv && /bin/bash /opt/qt5pibuilder/build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt ${QT_VERSION}
 
