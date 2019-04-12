@@ -6,8 +6,6 @@ MAINTAINER Giovanni Perez
 # Usage: ADD [source directory or URL] [destination directory]
 # Installation of packages used for the compilation of Xcompiler and QT5
 COPY sources.list /etc/apt/ 
-
-
 ARG QT_VERSION=5.10
 ARG GCC_VERSION=7.3.1
 ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
@@ -39,18 +37,12 @@ RUN apt-get update && apt-get install -y \
 # WORKDIR used to change the working directory
 RUN	mkdir -p /mnt/raspbian && mkdir -p ${PATH_GCC} 
 
-# Environment sysroot for compilation 
+# Copying file to build tools to /opt/qt5pibuilder
 COPY qt5pibuilder /opt/qt5pibuilder
-#TODO: replace  RUN command by ADD. Files from remote URLs will untar the file into the ADD director
 
-# installing cmake for the future  
 WORKDIR /tmp 
-RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
-	&& tar -kx  -f cmake-3.14.1.tar.gz \
-	&& rm -rf *.tar.* \
-	&& mv cmake* /opt  \
-	&& cd /opt/cmake* && /bin/bash -c ./bootstrap && make -j $(nproc) &&  make install  \ 
-	&& cmake --version
+# installing cmake for the future  
+# RUN /bin/bash /qt5pibuilder/getcmake.sh 
 	
 # download sysroot from google drive.
 RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh 
@@ -58,7 +50,6 @@ RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh
 RUN echo "path: ${PATH_GCC}  Version: ${GCC_VERSION} " \
 	&& /bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v ${GCC_VERSION} -p ${PATH_GCC}
 
-WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
 RUN printenv && /bin/bash /opt/qt5pibuilder/build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt ${QT_VERSION}
 
