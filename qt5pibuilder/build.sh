@@ -126,6 +126,7 @@ fi
 make ${MAKE_OPTS}
 make install
 cd ..
+rm -rf ${BASEDIR}/qtbase -rf
 
 # build qt modules
 for MODULE in $QT_MODULES; do
@@ -142,6 +143,10 @@ for MODULE in $QT_MODULES; do
 	make ${MAKE_OPTS}
 	make install
 	cd ..
+	rm -rf ${BASEDIR}/${MODULE}
 done
 
-echo completed the work
+zip -r qt5pibuilder.zip qt5pibuilder/qt5
+zip -r qt5pibuilder.zip qt5pibuilder/qt5pi
+
+echo "completed the work"
