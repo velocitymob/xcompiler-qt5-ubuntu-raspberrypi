@@ -10,6 +10,13 @@ wget --load-cookies \
 ls -lah 
 rm -rf /tmp/cookies.txt 
 tar -kx --xz -f sysroot.tar.xz 
+if [ ! -d /mnt/raspbian/sysroot ];then
+	echo 'directory not founded'
+	chroot	mkdir -p /mnt/raspbian
+else
+	echo 'directory founded'
+fi
+
 mv rpiSys*/sysroot /mnt/raspbian/ 
 rm -rf rpiSys* 
 rm -rf *.tar.* 

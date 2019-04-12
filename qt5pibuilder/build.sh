@@ -72,7 +72,6 @@ done
 
 echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:${QT_VERSION}"
 # get compiler
-exit 0
 PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 COMPILER=${PATH_GCC}/gcc-linaro-${GCC_VERSION}-2018.05-x86_64_arm-linux-gnueabihf/bin/${ARCHCROSS}
 
@@ -126,7 +125,6 @@ fi
 make ${MAKE_OPTS}
 make install
 cd ..
-rm -rf ${BASEDIR}/qtbase -rf
 
 # build qt modules
 for MODULE in $QT_MODULES; do
@@ -143,10 +141,9 @@ for MODULE in $QT_MODULES; do
 	make ${MAKE_OPTS}
 	make install
 	cd ..
-	rm -rf ${BASEDIR}/${MODULE}
 done
 
-zip -r qt5pibuilder.zip qt5pibuilder/qt5
-zip -r qt5pibuilder.zip qt5pibuilder/qt5pi
-
 echo "completed the work"
+zip -r qt5pibuilder.zip ${BASEDIR}/qt5
+zip -r qt5pibuilder.zip ${BASEDIR}/qt5pi
+
