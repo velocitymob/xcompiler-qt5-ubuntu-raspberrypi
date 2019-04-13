@@ -143,7 +143,7 @@ for MODULE in $QT_MODULES; do
 	cd ..
 done
 
-echo "completed the work"
 zip -r qt5pibuilder.zip ${BASEDIR}/qt5
 zip -r qt5pibuilder.zip ${BASEDIR}/qt5pi
 
+echo "completed the work"
