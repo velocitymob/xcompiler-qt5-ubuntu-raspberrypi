@@ -12,7 +12,7 @@ ENV ARCHCROSS arm-linux-gnueabihf-
 ENV SYSROOT /mnt/raspbian/sysroot
 RUN apt-get update && apt-get install -y \
 build-essential \
-libc6-dev\
+libc6-dev \
 wget \
 curl \
 gdb-multiarch \
