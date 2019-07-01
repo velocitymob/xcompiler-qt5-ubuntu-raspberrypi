@@ -117,7 +117,7 @@ if [ "$CLEAN" = true ]; then
 	git clean -d -f -x
 fi
 
-./configure -release -platform linux-clang \
+./configure -release \
 	-opengl es2 -no-use-gold-linker \
   -device $DEVICE	-device-option CROSS_COMPILE=$COMPILER \
 	-sysroot $SYSROOT -opensource -confirm-license -make libs -make tests -nomake examples \
