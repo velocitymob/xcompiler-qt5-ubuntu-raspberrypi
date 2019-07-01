@@ -6,7 +6,7 @@ set -e
 unset QT_VERSION GCC_VERSION PATH_GCC
 
 #this giy need to be a variable in the future
-#QT_VERSION=5.13
+#QT_VERSION=5.9
 # here come wich gcc tool do you want to try
 #GCC_VERSION=7.3.1
 # SYSROOT=/mnt/raspbian/sysroot
@@ -67,8 +67,7 @@ do
 		;;
 	esac
 done
-#echo ${popo[@]}
-#set -- "${popopo[@]}" # restore positional parameters
+set -- "${USAGE[@]}" # restore positional parameters
 
 echo "-c:${CLEAN} -d:${DEVICE} -gcc:${GCC_VERSION} -sys:${SYSROOT} -qt:${QT_VERSION}"
 # get compiler
@@ -118,10 +117,11 @@ if [ "$CLEAN" = true ]; then
 	git clean -d -f -x
 fi
 
-./configure -release -opengl es2 -device $DEVICE  -no-use-gold-linker \
--device-option CROSS_COMPILE=$COMPILER \
--sysroot $SYSROOT -opensource -confirm-license -make libs \
--prefix /usr/local/qt5pi -extprefix $BASEDIR/qt5pi -hostprefix $BASEDIR/qt5 -v
+./configure -release -platform linux-clang \
+	-opengl es2 -no-use-gold-linker \
+  -device $DEVICE	-device-option CROSS_COMPILE=$COMPILER \
+	-sysroot $SYSROOT -opensource -confirm-license -make libs -make tests -nomake examples \
+	-prefix /usr/local/qt5pi -extprefix $BASEDIR/qt5pi -hostprefix $BASEDIR/qt5 -v
 make ${MAKE_OPTS}
 make install
 cd ..
