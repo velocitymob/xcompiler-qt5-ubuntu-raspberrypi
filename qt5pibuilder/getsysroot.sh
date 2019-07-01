@@ -8,11 +8,10 @@ echo ${SAVE_COOKIES}
 wget --load-cookies \
  	/tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=${SAVE_COOKIES}&id=1rsX8h1eSGwRehzPLj-u7aFtsmbpqdrDQ" -O sysroot.tar.xz && rm -rf /tmp/cookies.txt 
 ls -lah 
-rm -rf /tmp/cookies.txt 
 tar -kx --xz -f sysroot.tar.xz 
 if [ ! -d /mnt/raspbian/sysroot ];then
 	echo 'directory not founded'
-	chroot	mkdir -p /mnt/raspbian
+	mkdir -p /mnt/raspbian
 else
 	echo 'directory founded'
 fi
