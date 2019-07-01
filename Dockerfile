@@ -6,7 +6,7 @@ MAINTAINER Giovanni Perez
 # Usage: ADD [source directory or URL] [destination directory]
 # Installation of packages used for the compilation of Xcompiler and QT5
 COPY sources.list /etc/apt/ 
-ARG QT_VERSION=5.10
+ARG QT_VERSION=5.13
 ARG GCC_VERSION=7.3.1
 ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 ARG DEVICE=linux-rasp-pi3-g++
@@ -42,7 +42,7 @@ COPY qt5pibuilder /opt/qt5pibuilder
 
 WORKDIR /tmp 
 # installing cmake for the future  
-# RUN /bin/bash /qt5pibuilder/getcmake.sh 
+RUN /bin/bash /qt5pibuilder/getcmake.sh 
 	
 # download sysroot from google drive.
 RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh 
