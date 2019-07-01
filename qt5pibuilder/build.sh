@@ -4,7 +4,7 @@
 set -x
 
 #this giy need to be a variable in the future
-QT_VERSION=5.13
+QT_VERSION=5.9
 # here come wich gcc tool do you want to try
 GCC_VERSION=7.3.1
 ARCHCROSS=arm-linux-gnueabihf-
@@ -68,6 +68,8 @@ while [ $# -gt 0 ]; do
 	esac
 done
 
+set -- "${USAGE[@]}" # restore positional parameters
+
 # get compiler
 echo "GET COMPILER"
 if [ ! -d $PATH_GCC/gcc-linaro-$GCC_VERSION-2018.05-x86_64_arm-linux-gnueabihf]; then
@@ -115,10 +117,11 @@ if [ "$CLEAN" = true ]; then
 	git clean -d -f -x
 fi
 
-./configure -release -opengl es2 -device $DEVICE  -no-use-gold-linker \
--device-option CROSS_COMPILE=$COMPILER \
--sysroot $SYSROOT -opensource -confirm-license -make libs \
--prefix /usr/local/qt5pi -extprefix $BASEDIR/qt5pi -hostprefix $BASEDIR/qt5 -v
+./configure -release -platform linux-clang \
+	-opengl es2 -no-use-gold-linker \
+  -device $DEVICE	-device-option CROSS_COMPILE=$COMPILER \
+	-sysroot $SYSROOT -opensource -confirm-license -make libs -make tests -nomake examples \
+	-prefix /usr/local/qt5pi -extprefix $BASEDIR/qt5pi -hostprefix $BASEDIR/qt5 -v
 make ${MAKE_OPTS}
 make install
 cd ..
@@ -139,5 +142,7 @@ for MODULE in $QT_MODULES; do
 	cd ..
 done
 
-echo completed the work
+zip -r qt5pibuilder.zip ${BASEDIR}/qt5
+zip -r qt5pibuilder.zip ${BASEDIR}/qt5pi
 
+echo "completed the work"
