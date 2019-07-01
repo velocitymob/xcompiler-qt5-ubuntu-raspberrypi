@@ -10,7 +10,7 @@ COPY sources.list /etc/apt/
 ARG QT_VERSION=5.13
 ARG GCC_VERSION=7.3.1
 ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
-ARG DEVICE=linux-rasp-pi3-g++
+ARG DEVICE=linux-rasp-pi3-vc4-g++
 ARG SYSROOT=/mnt/raspbian/sysroot
 ENV GCC_VERSION ${GCC_VERSION}
 ENV PATH_GCC ${PATH_GCC}
@@ -40,7 +40,7 @@ COPY qt5pibuilder /opt/qt5pibuilder
 
 WORKDIR /tmp 
 # installing cmake for the future  
-RUN /bin/bash /qt5pibuilder/getcmake.sh 
+RUN /bin/bash /opt/qt5pibuilder/getcmake.sh 
 	
 # download sysroot from google drive.
 RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh 
@@ -49,11 +49,9 @@ RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh
 RUN echo "path: ${PATH_GCC}  Version: ${GCC_VERSION} " \
 	&& /bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v ${GCC_VERSION} -p ${PATH_GCC}
 
+WORKDIR /opt/qt5pibuilder 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
 RUN printenv && /bin/bash /opt/qt5pibuilder/build.sh -c -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt ${QT_VERSION} 
-
-WORKDIR /opt/qt5pibuilder 
-RUN	printenv 
 
 # show the compiled version
 RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
