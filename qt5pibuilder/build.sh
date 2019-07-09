@@ -13,7 +13,7 @@ unset QT_VERSION GCC_VERSION PATH_GCC
 # module used to compile Stationpedelec, in the future add qtweb
 ARCHCROSS=arm-linux-gnueabihf-
 #QT_MODULES="qtxmlpatterns qtdeclarative qtserialport qtquickcontrols"
-QT_MODULES=""
+QT_MODULES="qtconnectivity"
 BASEDIR=$PWD
 CLEAN=true
 # here you can use a frisch raspbian image or your personal sysroot
@@ -117,8 +117,7 @@ if [ "$CLEAN" = true ]; then
 	git clean -d -f -x
 fi
 
-./configure -release \
-	-opengl es2 -no-use-gold-linker \
+./configure -release -opengl es2 -no-use-gold-linker \
   -device $DEVICE	-device-option CROSS_COMPILE=$COMPILER \
 	-sysroot $SYSROOT -opensource -confirm-license -make libs -make tests -nomake examples \
 	-prefix /usr/local/qt5pi -extprefix $BASEDIR/qt5pi -hostprefix $BASEDIR/qt5 -v
