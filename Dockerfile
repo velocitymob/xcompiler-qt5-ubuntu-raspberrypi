@@ -6,8 +6,6 @@ MAINTAINER Giovanni Perez
 # Usage: ADD [source directory or URL] [destination directory]
 # Installation of packages used for the compilation of Xcompiler and QT5
 COPY sources.list /etc/apt/ 
-
-
 ARG GCC_VERSION=7.3.1
 ARG PATH_GCC=/opt/gcc-linaro-${GCC_VERSION}
 ENV GCC_VERSION ${GCC_VERSION}
@@ -38,6 +36,10 @@ RUN	mkdir -p /mnt/raspbian && mkdir -p ${PATH_GCC}
 COPY qt5pibuilder /opt/qt5pibuilder
 #TODO: replace  RUN command by ADD. Files from remote URLs will untar the file into the ADD director
 
+# download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
+RUN export var1=${PATH_GCC} && export var2=${GCC_VERSION} &&\
+ /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh -p $var1 -v $var2
+
 # installing cmake for the future  
 WORKDIR /tmp 
 RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.1.tar.gz \
@@ -49,14 +51,13 @@ RUN wget  https://github.com/Kitware/CMake/releases/download/v3.14.1/cmake-3.14.
 	
 # download sysroot from google drive. TODO: find docker 
 RUN /bin/bash -c /opt/qt5pibuilder/getsysroot.sh 
-# download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
-RUN export var1=${PATH_GCC} && export var2=${GCC_VERSION} \
-	&& /bin/bash -c /opt/qt5pibuilder/getgcclinaro.sh -p $var1 -v $var2
+
 
 WORKDIR /opt/qt5pibuilder
 # compile qt5 for the target armv7l with sysroot and gcc-linaro-7.3.1
 RUN /bin/bash -c ./build.sh
+#RUN /bin/bash ./build.sh -c ${CLEAN} -d ${DEVICE} -gcc ${GCC_VERSION} -sys ${SYSROOT} -qt {QT_VERSION}
 
 
 # show the compiled version  
-RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
+#RUN /opt/qt5pibuilder/qt5/bin/qmake -query > /opt/reportfile.txt
