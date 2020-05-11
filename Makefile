@@ -1,5 +1,5 @@
-NAME 	 := $$(git remote -v | grep 'push' |cut -d:  -f2-| cut -d'.' -f1) 
-TAG    := $$(git log -1 --pretty=%!H(MISSING))
+NAME 	 := $(git remote -v | grep 'push' |cut -d:  -f2-| cut -d'.' -f1) 
+TAG    := $(git log -1 --pretty=%!H(MISSING))
 IMG    := ${NAME}:${TAG}
 LATEST := ${NAME}:latest
  
