@@ -44,11 +44,11 @@ RUN	mkdir -p /mnt/raspbian && mkdir -p ${PATH_GCC}
 # Environment sysroot for compilation
 COPY qt5pibuilder /opt/qt5pibuilder
 
-WORKDIR /tmp 
 # installing cmake for the future  
 RUN /bin/bash /opt/qt5pibuilder/getcmake.sh 
 	
-# download sysroot from google drive.
+# download sysroot from google drive. alternative
+# use docker to set up the distro. SEE Wiki
 RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh && \
 	ls -la mnt/raspbian
 
@@ -59,7 +59,7 @@ RUN /bin/bash  /opt/qt5pibuilder/getsysroot.sh && \
 
 # download toolchain gcc linaro V7.3.1  TODO: add input to select the version and the compiler .. 
 RUN echo "path:" ${PATH_GCC} " Version: "${GCC_VERSION} && \
- 	/bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v $GCC_VERSION -p $PATH_GCC \
+ 	/bin/bash /opt/qt5pibuilder/getgcclinaro.sh -v $GCC_VERSION -p $PATH_GCC &&\
 	echo $PATH_GCC ' this' $GCC_VERSION
 WORKDIR /opt/qt5pibuilder 
 RUN printenv
