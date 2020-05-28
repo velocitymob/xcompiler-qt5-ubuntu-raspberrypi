@@ -1,3 +1,4 @@
+[![](https://images.microbadger.com/badges/image/velocitymob/xcompiler-qt5-ubuntu-raspberrypi.svg)](https://microbadger.com/images/velocitymob/xcompiler-qt5-ubuntu-raspberrypi "Get your own image badge on microbadger.com") 
 # Cross-compile-toolchain 
 
 This image is used to compile projects related to qt modules for the Target armv7l (raspberry pi3 B+). The Host environment is based in Ubuntu x86_64. The Qt modules are created with the help from the gcc-linaro compiler, version 7.3.1.
