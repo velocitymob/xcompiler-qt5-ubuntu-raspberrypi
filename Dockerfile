@@ -1,5 +1,5 @@
 # download the image from docker
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 # Author / Maintainer
 MAINTAINER Giovanni Perez
 #RUN sed -i 's/main/main contrib/g' /etc/apt/sources.list
